@@ -70,18 +70,26 @@ module chipinvaders (
   logic [13:0] score;
 
 // Alien formation
-  logic [4:0][7:0] alive_matrix;
+  localparam int number_rows = 5;
+  localparam int number_columns = 8;
+  logic [number_rows-1:0][number_columns-1:0] alive_matrix;
+  logic [number_rows-1:0][number_columns-1:0] hit_matrix;
+  logic [15:0] [number_rows-1:0][number_columns-1:0] alien_position_x_matrix;
+  logic [15:0] [number_rows-1:0][number_columns-1:0] alien_position_y_matrix;
   logic alien_pixel;
 
   alien_formation #(
-      .NUM_ROWS(5),
-      .NUM_COLUMNS(8)
+      .NUMBER_ROWS(number_rows),
+      .NUMBER_COLUMNS(number_columns)
   ) aliens (
       .clk(vsync),
       .rst_n(rst_n),
       .scan_x(hpos),
       .scan_y(vpos),
       .alive_matrix(alive_matrix),
+      .hit_matrix(hit_matrix),
+      .alien_position_x_matrix(alien_position_x_matrix),
+      .alien_position_y_matrix(alien_position_y_matrix),
       .alien_pixel(alien_pixel)
   );
 

@@ -1,7 +1,7 @@
 
 module alien_formation #(
-    parameter logic [15:0] NUM_ROWS = 2,
-    parameter logic [15:0] NUM_COLUMNS = 4,
+    parameter logic [15:0] NUMBER_ROWS = 2,
+    parameter logic [15:0] NUMBER_COLUMNS = 4,
     parameter logic [15:0] SCALING = 2,
     parameter logic [15:0] ALIEN_SPACING_X = 20 * SCALING,
     parameter logic [15:0] ALIEN_SPACING_Y = 20 * SCALING,
@@ -17,8 +17,12 @@ module alien_formation #(
     input logic [15:0] scan_x,
     input logic [15:0] scan_y,
 
+    output logic [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] hit_matrix,
+
     // matrices representing individual alien status
-    output logic [NUM_ROWS-1:0][NUM_COLUMNS-1:0] alive_matrix = '1,
+    output logic [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] alive_matrix = '1,
+    output logic [15:0] [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] alien_position_x_matrix,
+    output logic [15:0] [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] alien_position_y_matrix,
     output logic alien_pixel
 );
 
@@ -26,16 +30,16 @@ module alien_formation #(
   logic [15:0] movement_frequency = 1;
   logic movement_direction = 1;
   logic [15:0] movement_width = 1;
-  logic [NUM_ROWS-1:0][NUM_COLUMNS-1:0] armed_matrix;
-  logic [NUM_ROWS-1:0][NUM_COLUMNS-1:0] graphics_matrix;
-  logic [NUM_ROWS-1:0][NUM_COLUMNS-1:0] movement_matrix;
+  logic [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] armed_matrix;
+  logic [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] graphics_matrix;
+  logic [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] movement_matrix;
 
   // update armed-matrix based on alive-matrix
   always_comb begin
-    for (int active_column = 0; active_column < NUM_COLUMNS; active_column++) begin
-      for (int active_row = 0; active_row < NUM_ROWS; active_row++) begin
+    for (int active_column = 0; active_column < NUMBER_COLUMNS; active_column++) begin
+      for (int active_row = 0; active_row < NUMBER_ROWS; active_row++) begin
         armed_matrix[active_row][active_column] = alive_matrix[active_row][active_column];
-        for (int lower_row = active_row + 1; lower_row < NUM_ROWS; lower_row++) begin
+        for (int lower_row = active_row + 1; lower_row < NUMBER_ROWS; lower_row++) begin
           if (alive_matrix[lower_row][active_column]) begin
             armed_matrix[active_row][active_column] = 1'b0;
           end
@@ -47,8 +51,8 @@ module alien_formation #(
   // create alien-matrix
   genvar row, column;
   generate
-    for (row = 0; row < NUM_ROWS; row++) begin : g_alien_rows
-      for (column = 0; column < NUM_COLUMNS; column++) begin : g_alien_cols
+    for (row = 0; row < NUMBER_ROWS; row++) begin : g_alien_rows
+      for (column = 0; column < NUMBER_COLUMNS; column++) begin : g_alien_cols
 
         // calculate initial position for each alien
         localparam logic [15:0] InitialPositionX = INITIAL_POSITION_X + (column * ALIEN_SPACING_X);
