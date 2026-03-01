@@ -69,10 +69,8 @@ module chipinvaders (
   logic [1:0] lives = 3;
   logic [13:0] score;
 
-  // Alien formation
+// Alien formation
   logic [4:0][7:0] alive_matrix;
-  logic [4:0][7:0] alien_gfx_matrix;
-  logic [4:0][7:0] kill_matrix;
   logic alien_pixel;
 
   alien_formation #(
@@ -84,23 +82,8 @@ module chipinvaders (
       .scan_x(hpos),
       .scan_y(vpos),
       .alive_matrix(alive_matrix),
-      .graphics_matrix(alien_gfx_matrix),
-      .kill_matrix(kill_matrix),
       .alien_pixel(alien_pixel)
   );
-
-  // Collision detection: register pixel-level overlap between laser and each alien
-  always_ff @(posedge clk_25mhz or negedge rst_n) begin
-    if (!rst_n) begin
-      kill_matrix <= '0;
-    end else begin
-      for (int r = 0; r < 5; r++) begin
-        for (int c = 0; c < 8; c++) begin
-          kill_matrix[r][c] <= laser_gfx && alien_gfx_matrix[r][c];
-        end
-      end
-    end
-  end
 
   // Cannon modules
   cannon cannon (
@@ -124,7 +107,7 @@ module chipinvaders (
       .vsync(vsync),
       .shoot(btn_u),
       .cannon_x(cannon_x),
-      .hit_alien(|kill_matrix),
+      .hit_alien(1'b0),
       .laser_active(laser_active),
       .laser_x(laser_x),
       .laser_y(laser_y),

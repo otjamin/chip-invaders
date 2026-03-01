@@ -33,8 +33,13 @@ module cannon_laser #(
       laser_y <= CANNON_Y;
       laser_active <= 1;
     end else if (laser_active) begin
-      laser_y <= laser_y - LaserSpeed;
-      if (laser_y < UPPER_BORDER || hit_alien) begin
+      if (laser_y > UPPER_BORDER + LaserSpeed) begin
+        laser_y <= laser_y - LaserSpeed;
+      end else begin
+        laser_active <= 0;
+      end
+      
+      if (hit_alien) begin
         laser_active <= 0;
       end
     end
