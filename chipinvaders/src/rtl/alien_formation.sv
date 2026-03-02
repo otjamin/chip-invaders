@@ -1,3 +1,4 @@
+
 module alien_formation #(
     parameter logic [15:0] NUMBER_ROWS = 2,
     parameter logic [15:0] NUMBER_COLUMNS = 4,
@@ -83,12 +84,12 @@ module alien_formation #(
     end
   endgenerate
 
-  // Combine all alien graphics into single output bit
+  // combine alien graphics into single output bit
   always_comb begin
     alien_pixel = |graphics_matrix;
   end
 
-  // Update movement direction based on movement_matrix
+  // update movement direction based on movement_matrix
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       movement_direction <= 1;
@@ -102,7 +103,7 @@ module alien_formation #(
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       level <= 0;
-      // Properly initialize all elements of the 2D matrix
+      // initialize elements of matrix
       for (int r = 0; r < NUMBER_ROWS; r++) begin
         for (int c = 0; c < NUMBER_COLUMNS; c++) begin
           alive_matrix[r][c] <= 1'b1;
@@ -110,7 +111,7 @@ module alien_formation #(
       end
     end else begin
       level <= 1;
-      // Remove hit aliens
+      // remove hit aliens
       for (int r = 0; r < NUMBER_ROWS; r++) begin
         for (int c = 0; c < NUMBER_COLUMNS; c++) begin
           if (hit_matrix[r][c]) begin

@@ -1,3 +1,4 @@
+
 module collision_detection #(
     parameter logic [15:0] NUMBER_ROWS = 2,
     parameter logic [15:0] NUMBER_COLUMNS = 4,
@@ -31,7 +32,7 @@ module collision_detection #(
     if (laser_active) begin
       for (int r = 0; r < NUMBER_ROWS; r++) begin
         for (int c = 0; c < NUMBER_COLUMNS; c++) begin
-          // Only check collision if alien is alive
+          // only check collision if alien is alive
           if (alive_matrix[r][c] &&
               (laser_position_x + laser_width > alien_position_x_matrix[r][c]) &&
               (laser_position_x < alien_position_x_matrix[r][c] + alien_width) &&

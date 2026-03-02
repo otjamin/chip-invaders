@@ -1,3 +1,4 @@
+
 module alien #(
     parameter logic [15:0] INITIAL_POSITION_X = 0,
     parameter logic [15:0] INITIAL_POSITION_Y = 0,
@@ -31,11 +32,11 @@ module alien #(
   // movement counter for frequency control
   logic [15:0] movement_counter;
 
-  // Output current positions
+  // output current positions
   assign current_position_x = position_x;
   assign current_position_y = position_y;
 
-  // Sprite ROM
+  // sprite ROM
 localparam logic [15:0] sprite_width = 16;
 localparam logic [15:0] sprite_height = 16;
 logic [sprite_width-1:0] sprite_rom [0:sprite_height-1];
@@ -43,7 +44,7 @@ initial begin
     $readmemb("src/rtl/basic_alien.hex", sprite_rom);
 end
 
-// Calculate relative position within sprite
+// calculate relative position within sprite
 logic signed [15:0] rel_x, rel_y;
 logic in_sprite_bounds;
 
@@ -51,18 +52,18 @@ always_comb begin
     rel_x = (scan_x - position_x) / SCALING;
     rel_y = (scan_y - position_y) / SCALING;
 
-    // Check if current scan position is within sprite bounds
+    // check if current scan position is within sprite bounds
     in_sprite_bounds = (rel_x >= 0) && (rel_x < sprite_width) &&
                        (rel_y >= 0) && (rel_y < sprite_height) &&
                        alive;
 
-    // Output graphics signal based on sprite ROM
+    // output graphics signal based on sprite ROM
     graphics = in_sprite_bounds ? ~sprite_rom[rel_y[3:0]][rel_x[3:0]] : 1'b0;
 end
 
   // combinational logic for movement calculation
   always_comb begin
-    // Default assignments to prevent latches
+    // default assignments to prevent latches
     next_position_x = position_x;
     next_position_y = position_y;
 
