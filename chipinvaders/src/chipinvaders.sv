@@ -130,6 +130,7 @@ module chipinvaders (
       .pix_y(vpos),
       .move_left(btn_l),
       .move_right(btn_r),
+      .fire(btn_u),
       .cannon_x_pos(cannon_x),
       .cannon_graphics(cannon_gfx),
       .scale(2)
