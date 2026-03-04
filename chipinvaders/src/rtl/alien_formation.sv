@@ -28,7 +28,8 @@ module alien_formation #(
 
   logic [3:0] level;
   logic [15:0] movement_frequency = 1;
-  logic movement_direction = 1;
+  logic movement_direction_x = 1;
+  logic movement_direction_y = 0;
   logic [15:0] movement_width = 1;
   logic [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] armed_matrix;
   logic [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] graphics_matrix;
@@ -71,7 +72,8 @@ module alien_formation #(
             .alive(alive_matrix[row][column]),
             .movement_frequency(movement_frequency),
             .movement_width(movement_width),
-            .movement_direction(movement_direction),
+            .movement_direction_x(movement_direction_x),
+            .movement_direction_y(movement_direction_y),
             .armed(armed_matrix[row][column]),
             .scan_x(scan_x),
             .scan_y(scan_y),
@@ -93,10 +95,14 @@ module alien_formation #(
   // update movement direction based on movement_matrix
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      movement_direction <= 1;
+      movement_direction_x <= 1;
+      movement_direction_y <= 0;
     end else begin
       if (|movement_matrix) begin
-        movement_direction <= ~movement_direction;
+        movement_direction_x <= ~movement_direction_x;
+        movement_direction_y <= 1;
+      end else begin
+        movement_direction_y <= 0;
       end
     end
   end

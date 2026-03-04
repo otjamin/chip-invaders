@@ -11,7 +11,8 @@ module alien #(
 
     input logic alive,
     input logic [15:0] movement_frequency,
-    input logic movement_direction, // 0 = left, 1 = right
+    input logic movement_direction_x, // 0 = left, 1 = right
+    input logic movement_direction_y, // 0 = stay, 1 = down
     input logic [15:0] movement_width,
     input logic armed, // 0 = unable to fire, 1 = capable of firing
 
@@ -74,11 +75,16 @@ end
 
     // move when counter reaches frequency threshold
     if (movement_counter >= movement_frequency && alive) begin
-        if (movement_direction) begin
+        if (movement_direction_x) begin
             next_position_x = position_x + movement_width;
         end else begin
             next_position_x = position_x - movement_width;
         end
+    end
+
+    // move down when direction_y is set
+    if (movement_direction_y && alive) begin
+        next_position_y = position_y + (sprite_height * SCALING);
     end
 
     movement = alive &&
