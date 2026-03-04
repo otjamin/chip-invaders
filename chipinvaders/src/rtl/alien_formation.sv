@@ -46,7 +46,7 @@ module alien_formation #(
         if (alive_matrix[r][c]) alive_count = alive_count + 1;
       end
     end
-    movement_width = (alive_count == 4) ? 6 : (alive_count == 16) ? 4 : 2;
+    movement_width = (alive_count <= 4) ? 6 : (alive_count <= 16) ? 4 : 2;
   end
 
   // update armed-matrix based on alive-matrix
