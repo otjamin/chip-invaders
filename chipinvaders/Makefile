@@ -16,3 +16,7 @@ librelane:
 .PHONY: view-results
 view-results:
 	PDK_ROOT=$(PDK_ROOT) PDK=$(PDK) librelane --manual-pdk --last-run --flow OpenInOpenROAD config.yaml
+
+.PHONY: klayout
+klayout:
+	PDK_ROOT=$(PDK_ROOT) PDK=$(PDK) librelane --manual-pdk --last-run --flow OpenInKLayout config.yaml
