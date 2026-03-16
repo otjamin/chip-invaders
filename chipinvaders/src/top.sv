@@ -34,7 +34,7 @@ module top (
   generate
     for (genvar i = 0; i < 1; i++) begin : iovdd_pads
       (* keep *)
-      sg13g2_IOPadIOVdd iovdd_pad (
+      sg13cmos5l_IOPadIOVdd iovdd_pad (
 `ifdef USE_POWER_PINS
           .iovdd(IOVDD),
           .iovss(IOVSS),
@@ -45,7 +45,7 @@ module top (
     end
     for (genvar i = 0; i < 1; i++) begin : iovss_pads
       (* keep *)
-      sg13g2_IOPadIOVss iovss_pad (
+      sg13cmos5l_IOPadIOVss iovss_pad (
 `ifdef USE_POWER_PINS
           .iovdd(IOVDD),
           .iovss(IOVSS),
@@ -56,7 +56,7 @@ module top (
     end
     for (genvar i = 0; i < 1; i++) begin : vdd_pads
       (* keep *)
-      sg13g2_IOPadVdd vdd_pad (
+      sg13cmos5l_IOPadVdd vdd_pad (
 `ifdef USE_POWER_PINS
           .iovdd(IOVDD),
           .iovss(IOVSS),
@@ -67,7 +67,7 @@ module top (
     end
     for (genvar i = 0; i < 1; i++) begin : vss_pads
       (* keep *)
-      sg13g2_IOPadVss vss_pad (
+      sg13cmos5l_IOPadVss vss_pad (
 `ifdef USE_POWER_PINS
           .iovdd(IOVDD),
           .iovss(IOVSS),
@@ -78,7 +78,7 @@ module top (
     end
   endgenerate
   // clk PAD instance
-  sg13g2_IOPadIn clk_pad (
+  sg13cmos5l_IOPadIn clk_pad (
 `ifdef USE_POWER_PINS
       .iovdd(IOVDD),
       .iovss(IOVSS),
@@ -89,7 +89,7 @@ module top (
       .pad  (clk_PAD)
   );
   //reset PAD instance
-  sg13g2_IOPadIn rst_n_pad (
+  sg13cmos5l_IOPadIn rst_n_pad (
 `ifdef USE_POWER_PINS
       .iovdd(IOVDD),
       .iovss(IOVSS),
@@ -100,7 +100,7 @@ module top (
       .pad  (rst_n_PAD)
   );
   //Button left PAD instance
-  sg13g2_IOPadIn button_left_pad (
+  sg13cmos5l_IOPadIn button_left_pad (
 `ifdef USE_POWER_PINS
       .iovdd(IOVDD),
       .iovss(IOVSS),
@@ -111,7 +111,7 @@ module top (
       .pad  (button_left_PAD)
   );
   //Button right PAD instance
-  sg13g2_IOPadIn button_right_pad (
+  sg13cmos5l_IOPadIn button_right_pad (
 `ifdef USE_POWER_PINS
       .iovdd(IOVDD),
       .iovss(IOVSS),
@@ -122,7 +122,7 @@ module top (
       .pad  (button_right_PAD)
   );
   //Button shoot PAD instance
-  sg13g2_IOPadIn button_shoot_pad (
+  sg13cmos5l_IOPadIn button_shoot_pad (
 `ifdef USE_POWER_PINS
       .iovdd(IOVDD),
       .iovss(IOVSS),
@@ -135,7 +135,7 @@ module top (
   // VGA Outputs PADs
   generate
     for (genvar i = 0; i < 4; i++) begin : vga_r_pads
-      sg13g2_IOPadOut30mA vga_r_pad (
+      sg13cmos5l_IOPadOut30mA vga_r_pad (
 `ifdef USE_POWER_PINS
           .vss  (VSS),
           .vdd  (VDD),
@@ -149,7 +149,7 @@ module top (
   endgenerate
   generate
     for (genvar i = 0; i < 4; i++) begin : vga_g_pads
-      sg13g2_IOPadOut30mA vga_g_pad (
+      sg13cmos5l_IOPadOut30mA vga_g_pad (
 `ifdef USE_POWER_PINS
           .vss  (VSS),
           .vdd  (VDD),
@@ -163,7 +163,7 @@ module top (
   endgenerate
   generate
     for (genvar i = 0; i < 4; i++) begin : vga_b_pads
-      sg13g2_IOPadOut30mA vga_b_pad (
+      sg13cmos5l_IOPadOut30mA vga_b_pad (
 `ifdef USE_POWER_PINS
           .vss  (VSS),
           .vdd  (VDD),
@@ -175,7 +175,7 @@ module top (
       );
     end
   endgenerate
-  sg13g2_IOPadOut30mA vga_hs_pad (
+  sg13cmos5l_IOPadOut30mA vga_hs_pad (
 `ifdef USE_POWER_PINS
       .vss  (VSS),
       .vdd  (VDD),
@@ -185,7 +185,7 @@ module top (
       .c2p  (vga_hs),
       .pad  (vga_hs_PAD)
   );
-  sg13g2_IOPadOut30mA vga_vs_pad (
+  sg13cmos5l_IOPadOut30mA vga_vs_pad (
 `ifdef USE_POWER_PINS
       .vss  (VSS),
       .vdd  (VDD),

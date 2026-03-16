@@ -51,21 +51,20 @@ MAGIC_EXT_UNIQUE: "notopports"
 PDN_ENABLE_PINS: false
 PDN_CORE_RING_VWIDTH: 15
 PDN_CORE_RING_HWIDTH: 15
-PDN_VPITCH: 50
-PDN_HPITCH: 50
-PDN_VWIDTH: 3.5
-PDN_HWIDTH: 3.5
+PDN_CORE_RING_VSPACING: 5
+PDN_CORE_RING_HSPACING: 5
 
 VDD_NETS: ["VDD"]
 GND_NETS: ["VSS"]
 
 GRT_ALLOW_CONGESTION: true
 IGNORE_DISCONNECTED_MODULES:
-- bondpad_70x70
-EXTRA_GDS: 
-- dir::bondpad/bondpad_70x70.gds
+- bondpad_70x70_5L
+PAD_BONDPAD_NAME: bondpad_70x70_5L
+EXTRA_GDS:
+- dir::bondpad_5l/gds/bondpad_70x70_5L.gds
 EXTRA_LEFS:
-- dir::bondpad/bondpad_70x70.lef
+- dir::bondpad_5l/lef/bondpad_70x70_5L.lef
 
 PAD_NORTH:
   - "vga_r_pads\\[0\\].vga_r_pad"

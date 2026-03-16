@@ -4,6 +4,12 @@ DYC26
 ## Getting started
 Open the repo in the Devcontainer.
 
+### New pdk
+To use the new pdk, change into the `pdk` submodule folder and run:
+```sh
+git clone https://github.com/IHP-GmbH/ihp-sg13cmos5l.git
+```
+
 ### Running the librelane flow
 1. Open a librelane nix-shell.
 ```sh
