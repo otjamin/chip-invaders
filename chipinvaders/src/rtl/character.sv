@@ -4,7 +4,7 @@ module character #(
     parameter logic [15:0] Y_POS   = 0
 ) (
     input logic v_sync,
-    input logic [15:0] char, // ascii when letter
+    input logic [15:0] char,  // ascii when letter
     input logic [15:0] hpos,
     input logic [15:0] vpos,
 
@@ -21,6 +21,7 @@ module character #(
 
   initial begin
     $readmemb("src/rtl/digits.hex", digits_rom);
+    $readmemb("src/rtl/letters.hex", letters_rom);
   end
 
   logic is_digit, is_letter;
@@ -41,7 +42,7 @@ module character #(
         graphics = digits_rom[char][rel_y][SpriteWidth-1-rel_x];
       end else if (is_letter) begin
         letter_index = char[15:0] - "A";
-        graphics = digits_rom[letter_index][rel_y][SpriteWidth-1-rel_x];
+        graphics = letters_rom[letter_index][rel_y][SpriteWidth-1-rel_x];
       end else graphics = 0;
     else graphics = 0;
   end
