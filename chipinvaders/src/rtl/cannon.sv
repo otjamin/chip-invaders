@@ -1,6 +1,9 @@
 `default_nettype none
 
-module cannon (
+module cannon #(
+  logic [9:0] SHIP_Y = 10'd440,
+  logic [9:0] SHIP_X = 10'd312
+) (
     input  logic       rst_n,
     input  logic       v_sync,
     input  logic [9:0] pix_x,
@@ -17,7 +20,6 @@ module cannon (
   localparam int BASE_HEIGHT = 16;
 
   // Position and Speed
-  localparam logic [9:0] SHIP_Y = 10'd440;
   localparam logic [9:0] SPEED = 10'd4;
 
   // Logic to calculate current scaled size
@@ -33,7 +35,7 @@ module cannon (
   // Update position on every Vertical Sync (once per frame)
   always_ff @(posedge v_sync or negedge rst_n) begin
     if (~rst_n) begin
-      x_reg <= 10'd312;  // Start at center screen
+      x_reg <= SHIP_X;  // Start at center screen
     end else begin
       if (move_left && x_reg > SPEED) x_reg <= x_reg - SPEED;
       else if (move_right && x_reg < (10'd640 - scaled_width)) x_reg <= x_reg + SPEED;

@@ -94,6 +94,37 @@ module hud (
 
   // ---------
 
+  // lives
+
+  localparam int TotalLives = 3;
+  logic [TotalLives-1:0] lives_matrix_raw;
+  logic [TotalLives-1:0] lives_matrix;
+
+  genvar life;
+  generate
+    for (life = 0; life < TotalLives; life++) begin : gen_lives
+      cannon #(
+        .SHIP_Y(HUD_Y_POS)
+      ) life_cannon (
+          .rst_n(0),
+          .v_sync(0),
+          .pix_x(pix_x),
+          .pix_y(pix_y),
+          .move_left(0),
+          .move_right(0),
+          .cannon_graphics(lives_matrix_raw[life]),
+          .scale(1)
+      );
+    end
+  endgenerate
+
+  always_comb begin
+    for (int i = 0; i < TotalLives; i++)
+      lives_matrix[i] = lives_matrix_raw[i] & (lives > i);
+  end
+
+  // ---------
+
 
   // --- DIGIT BITMAP FUNCTION (5 wide x 7 tall, bit 4 = leftmost column) ---
   function automatic logic [4:0] digit_row(input logic [3:0] d, input logic [2:0] row);
@@ -294,25 +325,25 @@ module hud (
     end
 
     // --- LIVES SECTION (Mini Ships) ---
-    if (pix_y >= HUD_Y_POS && pix_y < HUD_Y_POS + scaled_ship_h) begin
-      ship_rel_y = (pix_y - HUD_Y_POS) / 10'(scale);
+    // if (pix_y >= HUD_Y_POS && pix_y < HUD_Y_POS + scaled_ship_h) begin
+    //   ship_rel_y = (pix_y - HUD_Y_POS) / 10'(scale);
 
-      // Display ship icons based on lives remaining
-      if (lives >= 1 && pix_x >= LIVES_X_START && pix_x < LIVES_X_START + scaled_ship_w) begin
-        ship_rel_x = (pix_x - LIVES_X_START) / 10'(scale);
-        if (ship_bitmap[ship_rel_y[2:0]][12-ship_rel_x[3:0]]) value_on = 1'b1;  // life 1
-      end
-            else if (lives >= 2 && pix_x >= LIVES_X_START + ((scaled_ship_w * 3) >> 1) &&
-                     pix_x < LIVES_X_START + ((scaled_ship_w * 5) >> 1)) begin
-        ship_rel_x = (pix_x - (LIVES_X_START + ((scaled_ship_w * 3) >> 1))) / 10'(scale);
-        if (ship_bitmap[ship_rel_y[2:0]][12-ship_rel_x[3:0]]) value_on = 1'b1;
-      end
-            else if (lives >= 3 && pix_x >= LIVES_X_START + (scaled_ship_w * 3) &&
-                     pix_x < LIVES_X_START + (scaled_ship_w * 4)) begin
-        ship_rel_x = (pix_x - (LIVES_X_START + (scaled_ship_w * 3))) / 10'(scale);
-        if (ship_bitmap[ship_rel_y[2:0]][12-ship_rel_x[3:0]]) value_on = 1'b1;
-      end
-    end
+    //   // Display ship icons based on lives remaining
+    //   if (lives >= 1 && pix_x >= LIVES_X_START && pix_x < LIVES_X_START + scaled_ship_w) begin
+    //     ship_rel_x = (pix_x - LIVES_X_START) / 10'(scale);
+    //     if (ship_bitmap[ship_rel_y[2:0]][12-ship_rel_x[3:0]]) value_on = 1'b1;  // life 1
+    //   end
+    //         else if (lives >= 2 && pix_x >= LIVES_X_START + ((scaled_ship_w * 3) >> 1) &&
+    //                  pix_x < LIVES_X_START + ((scaled_ship_w * 5) >> 1)) begin
+    //     ship_rel_x = (pix_x - (LIVES_X_START + ((scaled_ship_w * 3) >> 1))) / 10'(scale);
+    //     if (ship_bitmap[ship_rel_y[2:0]][12-ship_rel_x[3:0]]) value_on = 1'b1;
+    //   end
+    //         else if (lives >= 3 && pix_x >= LIVES_X_START + (scaled_ship_w * 3) &&
+    //                  pix_x < LIVES_X_START + (scaled_ship_w * 4)) begin
+    //     ship_rel_x = (pix_x - (LIVES_X_START + (scaled_ship_w * 3))) / 10'(scale);
+    //     if (ship_bitmap[ship_rel_y[2:0]][12-ship_rel_x[3:0]]) value_on = 1'b1;
+    //   end
+    // end
   end
 
 endmodule
