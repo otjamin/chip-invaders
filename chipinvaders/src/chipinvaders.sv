@@ -153,12 +153,13 @@ module chipinvaders (
     score <= 0;
   end
 
-  hud hud (
+  hud #(
+    .SCALE(2)
+  ) hud (
       .pix_x   (hpos),
       .pix_y   (vpos),
       .lives   (lives),
       .score   (score),
-      .scale   (2),
       .label_on(hud_label_on),
       .value_on(hud_value_on)
   );

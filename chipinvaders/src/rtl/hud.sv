@@ -7,12 +7,14 @@
  * You can change the colors, and need to give it coordinates, the lives and score, its just a hud that shows information on the screen
  * It also has a scaling variable
  */
-module hud (
+module hud #(
+    parameter logic [3:0] SCALE = 1
+) (
     input  logic [ 9:0] pix_x,     // Current beam X position
     input  logic [ 9:0] pix_y,     // Current beam Y position
     input  logic [ 1:0] lives,     // Current player lives (0-3)
     input  logic [13:0] score,     // Current player score (0-9999)
-    input  logic [ 3:0] scale,     // Scaling factor (e.g., 2, 4)
+    // input  logic [ 3:0] scale,     // Scaling factor (e.g., 2, 4)
     output logic        label_on,  // High when a "SCORE:" label pixel is active
     output logic        value_on   // High when a score digit or lives icon pixel is active
 );
@@ -30,7 +32,7 @@ module hud (
 
   // static "SCORE"
 
-  localparam logic [15:0] ScoreCharScaling = 3 * scale;
+  localparam logic [15:0] ScoreCharScaling = 3 * SCALE;
   localparam logic [15:0] ScoreCharW = 5;
   localparam logic [15:0] ScoreCharGap = 1;
   localparam logic [15:0] ScoreStep = (ScoreCharW + ScoreCharGap) * ScoreCharScaling;
@@ -104,16 +106,16 @@ module hud (
   logic [TotalLives-1:0] lives_matrix_raw;
   logic [TotalLives-1:0] lives_matrix;
 
-  localparam logic[15:0] LiveW = 16;
-  localparam logic[15:0] LiveGap = 4;
-  localparam logic [15:0] LiveStep = (LiveW + LiveW) * scale;
+  localparam logic [15:0] LiveW = 16;
+  localparam logic [15:0] LiveGap = 4;
+  localparam logic [15:0] LiveStep = (LiveW + LiveW) * SCALE;
 
   genvar life;
   generate
     for (life = 0; life < TotalLives; life++) begin : gen_lives
       cannon #(
-        .SHIP_Y(HUD_Y_POS),
-        .SHIP_X(LIVES_X_START + life * LiveStep)
+          .SHIP_Y(HUD_Y_POS),
+          .SHIP_X(LIVES_X_START + life * LiveStep)
       ) life_cannon (
           .rst_n(0),
           .v_sync(0),
@@ -122,14 +124,13 @@ module hud (
           .move_left(0),
           .move_right(0),
           .cannon_graphics(lives_matrix_raw[life]),
-          .scale(scale)
+          .scale(SCALE)
       );
     end
   endgenerate
 
   always_comb begin
-    for (int i = 0; i < TotalLives; i++)
-      lives_matrix[i] = lives_matrix_raw[i] & (lives > i);
+    for (int i = 0; i < TotalLives; i++) lives_matrix[i] = lives_matrix_raw[i] & (lives > i);
 
     value_on = |lives_matrix;
   end
@@ -228,10 +229,10 @@ module hud (
   logic [9:0] slot_x;  // x offset within the current digit slot
   logic [4:0] digit_row_bits;  // scratch: one row of the current digit
 
-  assign scaled_char_w = 10'(CHAR_WIDTH * scale);
-  assign scaled_char_h = 10'(CHAR_HEIGHT * scale);
-  assign scaled_ship_w = 10'(SHIP_WIDTH * scale);
-  assign scaled_ship_h = 10'(SHIP_HEIGHT * scale);
+  assign scaled_char_w = 10'(CHAR_WIDTH * SCALE);
+  assign scaled_char_h = 10'(CHAR_HEIGHT * SCALE);
+  assign scaled_ship_w = 10'(SHIP_WIDTH * SCALE);
+  assign scaled_ship_h = 10'(SHIP_HEIGHT * SCALE);
 
   // --- SHIP BITMAP (For Lives) ---
   logic [12:0] ship_bitmap[8];
