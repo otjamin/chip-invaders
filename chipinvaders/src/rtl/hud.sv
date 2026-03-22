@@ -99,7 +99,8 @@ module hud #(
 
   localparam logic [15:0] LiveW = 16;
   localparam logic [15:0] LiveGap = 4;
-  localparam logic [15:0] LiveStep = (LiveW + LiveGap) * SCALE;
+  localparam logic [15:0] LiveScale = SCALE * 2;
+  localparam logic [15:0] LiveStep = (LiveW + LiveGap) * LiveScale;
 
   genvar life;
   generate
@@ -115,7 +116,7 @@ module hud #(
           .move_left(0),
           .move_right(0),
           .cannon_graphics(lives_matrix_raw[life]),
-          .scale(SCALE)
+          .scale(LiveScale)
       );
     end
   endgenerate
@@ -125,52 +126,52 @@ module hud #(
   // score value
   logic [3:0] score_d3, score_d2, score_d1, score_d0;  // thousands, hundreds, tens, ones
 
-  logic [4:0] score_on_matrix;
+  logic [3:0] score_on_matrix;
 
   localparam logic [15:0] ScoreToDigitsGap = 2 * SCALE;
 
   character #(
-    .SCALING(ScoreCharScaling),
-    .X_POS  (ScoreXStart + 5 * ScoreStep + ScoreToDigitsGap),
-    .Y_POS  (HudYPos)
+      .SCALING(ScoreCharScaling),
+      .X_POS  (ScoreXStart + 5 * ScoreStep + ScoreToDigitsGap),
+      .Y_POS  (HudYPos)
   ) score_c3 (
-    .hpos(pix_x),
-    .vpos(pix_y),
-    .char(score_d3),
-    .graphics(score_on_matrix[3])
+      .hpos(pix_x),
+      .vpos(pix_y),
+      .char(score_d3),
+      .graphics(score_on_matrix[3])
   );
 
   character #(
-    .SCALING(ScoreCharScaling),
-    .X_POS  (ScoreXStart + 6 * ScoreStep + ScoreToDigitsGap),
-    .Y_POS  (HudYPos)
+      .SCALING(ScoreCharScaling),
+      .X_POS  (ScoreXStart + 6 * ScoreStep + ScoreToDigitsGap),
+      .Y_POS  (HudYPos)
   ) score_c2 (
-    .hpos(pix_x),
-    .vpos(pix_y),
-    .char(score_d2),
-    .graphics(score_on_matrix[2])
+      .hpos(pix_x),
+      .vpos(pix_y),
+      .char(score_d2),
+      .graphics(score_on_matrix[2])
   );
 
   character #(
-    .SCALING(ScoreCharScaling),
-    .X_POS  (ScoreXStart + 7 * ScoreStep + ScoreToDigitsGap),
-    .Y_POS  (HudYPos)
+      .SCALING(ScoreCharScaling),
+      .X_POS  (ScoreXStart + 7 * ScoreStep + ScoreToDigitsGap),
+      .Y_POS  (HudYPos)
   ) score_c1 (
-    .hpos(pix_x),
-    .vpos(pix_y),
-    .char(score_d1),
-    .graphics(score_on_matrix[1])
+      .hpos(pix_x),
+      .vpos(pix_y),
+      .char(score_d1),
+      .graphics(score_on_matrix[1])
   );
 
   character #(
-    .SCALING(ScoreCharScaling),
-    .X_POS  (ScoreXStart + 8 * ScoreStep + ScoreToDigitsGap),
-    .Y_POS  (HudYPos)
+      .SCALING(ScoreCharScaling),
+      .X_POS  (ScoreXStart + 8 * ScoreStep + ScoreToDigitsGap),
+      .Y_POS  (HudYPos)
   ) score_c0 (
-    .hpos(pix_x),
-    .vpos(pix_y),
-    .char(score_d0),
-    .graphics(score_on_matrix[0])
+      .hpos(pix_x),
+      .vpos(pix_y),
+      .char(score_d0),
+      .graphics(score_on_matrix[0])
   );
 
 
