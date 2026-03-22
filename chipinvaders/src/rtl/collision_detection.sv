@@ -2,12 +2,12 @@
 module collision_detection #(
     parameter logic [15:0] NUMBER_ROWS = 2,
     parameter logic [15:0] NUMBER_COLUMNS = 4,
-    parameter logic [15:0] alien_sprite_width = 16,
-    parameter logic [15:0] alien_sprite_height = 16,
-    parameter int ALIEN_SCALING = 2,
-    parameter logic [15:0] projectile_sprite_width = 1,
-    parameter logic [15:0] projectile_sprite_height = 4,
-    parameter int PROJECTILE_SCALING = 4
+    parameter logic [15:0] ALIEN_SPRITE_WIDTH = 16,
+    parameter logic [15:0] ALIEN_SPRITE_HEIGHT = 16,
+    parameter logic [3:0] ALIEN_SCALING = 2,
+    parameter logic [15:0] PROJECTILE_SPRITE_WIDTH = 1,
+    parameter logic [15:0] PROJECTILE_SPRITE_HEIGHT = 4,
+    parameter logic [3:0] PROJECTILE_SCALING = 4
 ) (
     input logic clk,
     input logic rst_n,
@@ -22,10 +22,10 @@ module collision_detection #(
     output logic [NUMBER_ROWS-1:0][NUMBER_COLUMNS-1:0] hit_matrix
 );
 
-  logic [15:0] alien_width = alien_sprite_width * ALIEN_SCALING;
-  logic [15:0] alien_height = alien_sprite_height * ALIEN_SCALING;
-  logic [15:0] laser_width = projectile_sprite_width * PROJECTILE_SCALING;
-  logic [15:0] laser_height = projectile_sprite_height * PROJECTILE_SCALING;
+  logic [15:0] alien_width = ALIEN_SPRITE_WIDTH * ALIEN_SCALING;
+  logic [15:0] alien_height = ALIEN_SPRITE_HEIGHT * ALIEN_SCALING;
+  logic [15:0] laser_width = PROJECTILE_SPRITE_WIDTH * PROJECTILE_SCALING;
+  logic [15:0] laser_height = PROJECTILE_SPRITE_HEIGHT * PROJECTILE_SCALING;
 
   always_comb begin
     hit_matrix = '0;

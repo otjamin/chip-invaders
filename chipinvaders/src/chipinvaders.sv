@@ -72,6 +72,12 @@ module chipinvaders (
 // Alien formation
   localparam int number_rows = 5;
   localparam int number_columns = 8;
+  localparam [15:0] alien_sprite_width = 16;
+  localparam [15:0] alien_sprite_height = 16;
+  localparam [3:0] alien_scaling = 2;
+  localparam [15:0] projectile_sprite_width = 1;
+  localparam [15:0] projectile_sprite_height = 4;
+  localparam [3:0] projectile_scaling = 4;
   logic [number_rows-1:0][number_columns-1:0] alive_matrix;
   logic [number_rows-1:0][number_columns-1:0] hit_matrix;
   logic [15:0] [number_rows-1:0][number_columns-1:0] alien_position_x_matrix;
@@ -81,9 +87,9 @@ module chipinvaders (
   alien_formation #(
       .NUMBER_ROWS(number_rows),
       .NUMBER_COLUMNS(number_columns),
-      .SPRITE_WIDTH(16),
-      .SPRITE_HEIGHT(16),
-      .SCALING_FACTOR(2)
+      .SPRITE_WIDTH(alien_sprite_width),
+      .SPRITE_HEIGHT(alien_sprite_height),
+      .SCALING_FACTOR(alien_scaling)
   ) aliens (
       .clk(vsync),
       .rst_n(rst_n),
@@ -102,12 +108,12 @@ module chipinvaders (
   collision_detection #(
       .NUMBER_ROWS(number_rows),
       .NUMBER_COLUMNS(number_columns),
-      .alien_sprite_width(16),
-      .alien_sprite_height(16),
-      .ALIEN_SCALING(2),
-      .projectile_sprite_width(1),
-      .projectile_sprite_height(4),
-      .PROJECTILE_SCALING(4)
+      .ALIEN_SPRITE_WIDTH(alien_sprite_width),
+      .ALIEN_SPRITE_HEIGHT(alien_sprite_height),
+      .ALIEN_SCALING(alien_scaling),
+      .PROJECTILE_SPRITE_WIDTH(projectile_sprite_width),
+      .PROJECTILE_SPRITE_HEIGHT(projectile_sprite_height),
+      .PROJECTILE_SCALING(projectile_scaling)
   ) collision_det (
       .clk(clk_25mhz),
       .rst_n(rst_n),
