@@ -140,9 +140,7 @@ module chipinvaders (
     score <= 0;
   end
 
-  hud #(
-    .SCALE(2)
-  ) hud (
+  hud hud (
       .pix_x   (hpos),
       .pix_y   (vpos),
       .lives   (lives),
