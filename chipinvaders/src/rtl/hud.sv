@@ -106,7 +106,7 @@ module hud #(
   generate
     for (life = 0; life < TotalLives; life++) begin : gen_lives
       cannon #(
-          .SHIP_Y(HudYPos),
+          .SHIP_Y(HudYPos - ScoreCharW * LiveScale),
           .SHIP_X(LivesXStart + life * LiveStep)
       ) life_cannon (
           .rst_n(0),
