@@ -1,6 +1,8 @@
 [submodule "librelane"]
 	path = chipinvaders/librelane
 	url = https://github.com/librelane/librelane
+	branch = dev
 [submodule "pdk"]
 	path = chipinvaders/pdk
 	url = https://github.com/IHP-GmbH/IHP-Open-PDK
+	branch = dev
