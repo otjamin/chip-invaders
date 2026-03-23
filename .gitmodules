@@ -4,5 +4,5 @@
 	branch = dev
 [submodule "pdk"]
 	path = chipinvaders/pdk
-	url = https://github.com/IHP-GmbH/IHP-Open-PDK
+	url = https://github.com/otjamin/IHP-Open-PDK
 	branch = dev
