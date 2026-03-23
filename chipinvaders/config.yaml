@@ -101,3 +101,9 @@ PAD_WEST:
   - "button_left_pad"
   - "button_right_pad"
   - "button_shoot_pad"
+
+PDN_OBSTRUCTIONS:
+  - [TopMetal1, 450, 450, 550, 566]
+
+ROUTING_OBSTRUCTIONS:
+  - [TopMetal1, 450, 450, 550, 566]
