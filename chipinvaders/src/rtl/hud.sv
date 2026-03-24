@@ -105,16 +105,12 @@ module hud #(
   genvar life;
   generate
     for (life = 0; life < TotalLives; life++) begin : gen_lives
-      cannon #(
-          .SHIP_Y(HudYPos - ScoreCharW * LiveScale),
-          .SHIP_X(LivesXStart + life * LiveStep)
+      cannon_display #(
+          .CANNON_Y(HudYPos - ScoreCharW * LiveScale),
       ) life_cannon (
-          .rst_n(0),
-          .v_sync(0),
           .pix_x(pix_x),
           .pix_y(pix_y),
-          .move_left(0),
-          .move_right(0),
+          .x_reg(LivesXStart + life * LiveStep),
           .cannon_graphics(lives_matrix_raw[life]),
           .scale(LiveScale)
       );
