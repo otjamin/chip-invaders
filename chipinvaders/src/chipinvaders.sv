@@ -145,7 +145,6 @@ module chipinvaders (
       .pix_y   (vpos),
       .lives   (lives),
       .score   (score),
-      .scale   (2),
       .label_on(hud_label_on),
       .value_on(hud_value_on)
   );

@@ -191,7 +191,10 @@ def test_cannon_runner():
     import shutil
     shutil.copy(proj_path / "src" / "rtl" / "single_barrel_cannon.hex", hex_dir / "single_barrel_cannon.hex")
 
-    sources = [proj_path / "src" / "rtl" / "cannon.sv"]
+    sources = [
+        proj_path / "src" / "rtl" / "cannon.sv",
+        proj_path / "src" / "rtl" / "cannon_display.sv"
+    ]
 
     runner = get_runner(sim)
     runner.build(
