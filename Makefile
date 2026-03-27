@@ -5,6 +5,7 @@ TAG=chipinvaders-run
 PDK_ROOT ?= $(WORK_DIR)/pdk
 PDK = ihp-sg13cmos5l
 
+ARTIX7_CHIPDB = chipdb/
 ADDITIONAL_SOURCES = $(wildcard src/rtl/*.sv)
 
 TARGET ?= nexys
