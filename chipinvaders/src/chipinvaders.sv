@@ -64,6 +64,9 @@ module chipinvaders (
 
   // All game signals
   logic reset_game;
+  logic game_rst_n;
+  assign game_rst_n = rst_n & ~reset_game;
+
   logic [1:0] game_state;  // 00 = start, 01 = playing, 10 = game over
 
   logic [9:0] cannon_x;
@@ -101,7 +104,7 @@ module chipinvaders (
   ) aliens (
       .clk(clk_25mhz),
       .enable(vsync_pe),
-      .rst_n(rst_n),
+      .rst_n(game_rst_n),
       .scan_x(hpos),
       .scan_y(vpos),
       .alive_matrix(alive_matrix),
@@ -140,7 +143,7 @@ module chipinvaders (
 
   // Cannon modules
   cannon cannon (
-      .rst_n(rst_n),
+      .rst_n(game_rst_n),
       .clk(clk_25mhz),
       .enable(vsync_pe),
       .pix_x(hpos),
@@ -156,7 +159,7 @@ module chipinvaders (
   cannon_laser #(
       .CANNON_Y(440)
   ) laser (
-      .reset_n(rst_n),
+      .reset_n(game_rst_n),
       .clk(clk_25mhz),
       .enable(vsync_pe),
       .vpos(vpos),
