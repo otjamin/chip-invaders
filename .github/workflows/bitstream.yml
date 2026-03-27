@@ -20,12 +20,11 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
 
       - name: Generate Bitstream
-        working-directory: chipinvaders
         run: nix develop github:openxc7/toolchain-nix --command make bits
 
       - name: Upload Bitstream Artifact
         uses: actions/upload-artifact@v6
         with:
           name: chipinvaders-bitstream
-          path: chipinvaders/chipinvaders.bit
+          path: chipinvaders.bit
           if-no-files-found: error

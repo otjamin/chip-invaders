@@ -7,7 +7,6 @@ Open the repo in the Devcontainer.
 ### Running the librelane flow
 1. Open a librelane nix-shell.
 ```sh
-cd chipinvaders/
 nix-shell librelane/
 ```
 
@@ -29,7 +28,6 @@ nix develop github:openxc7/toolchain-nix
 
 2. To build the bitstream:
 ```sh
-cd chipinvaders/
 make bits # For Nexys A7
 make TARGET=basys bits # For Basys 3
 ```
