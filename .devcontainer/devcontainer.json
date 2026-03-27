@@ -1,16 +1,16 @@
 {
 	"name": "librelane-base-image",
-    "image": "ghcr.io/hm-aemy/librelane-base-image:latest",
+	"image": "ghcr.io/hm-aemy/librelane-base-image:latest",
 
-    "postCreateCommand": "bash .devcontainer/post-create.sh",
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
 
 	"postAttachCommand": "git config --global --unset http.sslcainfo || true", // so you can commit and push inside the devcontainer
 
-    "runArgs": [
-        "--privileged", // This is NOT safe, but we need it to flash the FPGA.
+	"runArgs": [
+		"--privileged", // This is NOT safe, but we need it to flash the FPGA.
 		"-v", "/dev/bus/usb:/dev/bus/usb"
 	],
-	
+
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -20,7 +20,8 @@
 			],
 			"settings": {
 				"verilog.languageServer.veribleVerilogLs.enabled": true,
-				"verilog.linting.linter": "verilator"
+				"verilog.linting.linter": "verilator",
+				"verilog.linting.verilator.arguments": "-Wno-WIDTHEXPAND"
 			}
 		}
 	}

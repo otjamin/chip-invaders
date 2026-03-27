@@ -44,6 +44,14 @@ module chipinvaders (
   logic [9:0] hpos;
   logic [9:0] vpos;
 
+  logic vsync_d;
+  always_ff @(posedge clk_25mhz or negedge rst_n) begin
+    if (!rst_n) vsync_d <= 1'b0;
+    else vsync_d <= vsync;
+  end
+  logic vsync_pe;
+  assign vsync_pe = vsync & ~vsync_d;
+
   hvsync_generator hvsync_gen (
       .clk(clk_25mhz),
       .reset(~rst_n),
@@ -56,6 +64,9 @@ module chipinvaders (
 
   // All game signals
   logic reset_game;
+  logic game_rst_n;
+  assign game_rst_n = rst_n & ~reset_game;
+
   logic [1:0] game_state;  // 00 = start, 01 = playing, 10 = game over
 
   logic [9:0] cannon_x;
@@ -70,46 +81,76 @@ module chipinvaders (
   logic [13:0] score;
 
   // Alien formation
-  logic [4:0][7:0] alive_matrix;
-  logic [4:0][7:0] alien_gfx_matrix;
-  logic [4:0][7:0] kill_matrix;
+  localparam int NumberRows = 5;
+  localparam int NumberColumns = 8;
+  localparam [15:0] AlienSpriteWidth = 16;
+  localparam [15:0] AlienSpriteHeight = 16;
+  localparam [3:0] AlienScaling = 2;
+  localparam [15:0] ProjectileSpriteWidth = 1;
+  localparam [15:0] ProjectileSpriteHeight = 4;
+  localparam [3:0] ProjectileScaling = 4;
+  logic [NumberRows-1:0][NumberColumns-1:0] alive_matrix;
+  logic [NumberRows-1:0][NumberColumns-1:0] hit_matrix;
+  logic [NumberRows-1:0][NumberColumns-1:0][15:0] alien_position_x_matrix;
+  logic [NumberRows-1:0][NumberColumns-1:0][15:0] alien_position_y_matrix;
   logic alien_pixel;
 
   alien_formation #(
-      .NUM_ROWS(5),
-      .NUM_COLUMNS(8)
+      .NUMBER_ROWS(NumberRows),
+      .NUMBER_COLUMNS(NumberColumns),
+      .SPRITE_WIDTH(AlienSpriteWidth),
+      .SPRITE_HEIGHT(AlienSpriteHeight),
+      .SCALING_FACTOR(AlienScaling)
   ) aliens (
-      .clk(vsync),
-      .rst_n(rst_n),
+      .clk(clk_25mhz),
+      .enable(vsync_pe),
+      .rst_n(game_rst_n),
       .scan_x(hpos),
       .scan_y(vpos),
       .alive_matrix(alive_matrix),
-      .graphics_matrix(alien_gfx_matrix),
-      .kill_matrix(kill_matrix),
+      .hit_matrix(hit_matrix),
+      .alien_position_x_matrix(alien_position_x_matrix),
+      .alien_position_y_matrix(alien_position_y_matrix),
       .alien_pixel(alien_pixel)
   );
 
-  // Collision detection: register pixel-level overlap between laser and each alien
-  always_ff @(posedge clk_25mhz or negedge rst_n) begin
-    if (!rst_n) begin
-      kill_matrix <= '0;
-    end else begin
-      for (int r = 0; r < 5; r++) begin
-        for (int c = 0; c < 8; c++) begin
-          kill_matrix[r][c] <= laser_gfx && alien_gfx_matrix[r][c];
-        end
-      end
-    end
+  // Collision detection
+  logic hit_alien;
+
+  collision_detection #(
+      .NUMBER_ROWS(NumberRows),
+      .NUMBER_COLUMNS(NumberColumns),
+      .ALIEN_SPRITE_WIDTH(AlienSpriteWidth),
+      .ALIEN_SPRITE_HEIGHT(AlienSpriteHeight),
+      .ALIEN_SCALING(AlienScaling),
+      .PROJECTILE_SPRITE_WIDTH(ProjectileSpriteWidth),
+      .PROJECTILE_SPRITE_HEIGHT(ProjectileSpriteHeight),
+      .PROJECTILE_SCALING(ProjectileScaling)
+  ) collision_det (
+      .alive_matrix(alive_matrix),
+      .alien_position_x_matrix(alien_position_x_matrix),
+      .alien_position_y_matrix(alien_position_y_matrix),
+      .laser_active(laser_active),
+      .laser_position_x(laser_x),
+      .laser_position_y(laser_y),
+      .hit_matrix(hit_matrix)
+  );
+
+  // Detect if any alien was hit
+  always_comb begin
+    hit_alien = |hit_matrix;
   end
 
   // Cannon modules
   cannon cannon (
-      .rst_n(rst_n),
-      .v_sync(vsync),
+      .rst_n(game_rst_n),
+      .clk(clk_25mhz),
+      .enable(vsync_pe),
       .pix_x(hpos),
       .pix_y(vpos),
       .move_left(btn_l),
       .move_right(btn_r),
+      .fire(btn_u),
       .cannon_x_pos(cannon_x),
       .cannon_graphics(cannon_gfx),
       .scale(2)
@@ -118,13 +159,14 @@ module chipinvaders (
   cannon_laser #(
       .CANNON_Y(440)
   ) laser (
-      .reset_n(rst_n),
+      .reset_n(game_rst_n),
+      .clk(clk_25mhz),
+      .enable(vsync_pe),
       .vpos(vpos),
       .hpos(hpos),
-      .vsync(vsync),
       .shoot(btn_u),
       .cannon_x(cannon_x),
-      .hit_alien(|kill_matrix),
+      .hit_alien(hit_alien),
       .laser_active(laser_active),
       .laser_x(laser_x),
       .laser_y(laser_y),
@@ -135,9 +177,27 @@ module chipinvaders (
   logic hud_label_on;
   logic hud_value_on;
 
-  always_ff @(posedge reset_game) begin
-    lives <= 3;  // Reset to 3 lives at the start of the game
-    score <= 0;
+  logic hit_alien_d;
+
+  always_ff @(posedge clk_25mhz or negedge rst_n) begin
+    if (!rst_n) begin
+      lives <= 3;
+      score <= 0;
+      hit_alien_d <= 0;
+    end else if (reset_game) begin
+      lives <= 3;  // Reset to 3 lives at the start of the game
+      score <= 0;
+      hit_alien_d <= 0;
+    end else if (vsync_pe) begin
+      hit_alien_d <= hit_alien;
+      if (game_state == 2'd1 && hit_alien && !hit_alien_d) begin
+        if (score <= 9989) begin
+          score <= score + 10;
+        end else begin
+          score <= 9999;
+        end
+      end
+    end
   end
 
   hud hud (
@@ -157,7 +217,8 @@ module chipinvaders (
 
   game_display game_disp (
       .rst_n(rst_n),
-      .v_sync(vsync),
+      .clk(clk_25mhz),
+      .enable(vsync_pe),
       .pix_x(hpos),
       .pix_y(vpos),
       .state(game_state),
@@ -171,7 +232,8 @@ module chipinvaders (
 
   game_state_machine state_machine (
       .rst_n(rst_n),
-      .v_sync(vsync),
+      .clk(clk_25mhz),
+      .enable(vsync_pe),
       .trigger_in(btn_u),
       .game_over_trigger(game_over_trigger),
       .state(game_state),

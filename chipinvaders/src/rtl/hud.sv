@@ -1,10 +1,3 @@
-/**
- * Module: hud
- * Description: UI Head-Up Display for the game (Score and Lives).
- * This module receives screen coordinates and game state to output RGB signals.
- * You can change the colors, and need to give it coordinates, the lives and score, its just a hud that shows information on the screen
- * It also has a scaling variable
- */
 module hud #(
     parameter logic [3:0] SCALE = 1
 ) (
@@ -37,7 +30,7 @@ module hud #(
   ) score_s (
       .hpos(pix_x),
       .vpos(pix_y),
-      .char("S"),
+      .char_code("S"),
       .graphics(label_on_matrix[0])
   );
 
@@ -48,7 +41,7 @@ module hud #(
   ) score_c (
       .hpos(pix_x),
       .vpos(pix_y),
-      .char("C"),
+      .char_code("C"),
       .graphics(label_on_matrix[1])
   );
 
@@ -59,7 +52,7 @@ module hud #(
   ) score_o (
       .hpos(pix_x),
       .vpos(pix_y),
-      .char("O"),
+      .char_code("O"),
       .graphics(label_on_matrix[2])
   );
 
@@ -70,7 +63,7 @@ module hud #(
   ) score_r (
       .hpos(pix_x),
       .vpos(pix_y),
-      .char("R"),
+      .char_code("R"),
       .graphics(label_on_matrix[3])
   );
 
@@ -81,7 +74,7 @@ module hud #(
   ) score_e (
       .hpos(pix_x),
       .vpos(pix_y),
-      .char("E"),
+      .char_code("E"),
       .graphics(label_on_matrix[4])
   );
 
@@ -133,7 +126,7 @@ module hud #(
   ) score_c3 (
       .hpos(pix_x),
       .vpos(pix_y),
-      .char(score_d3),
+      .char_code(score_d3),
       .graphics(score_on_matrix[3])
   );
 
@@ -144,7 +137,7 @@ module hud #(
   ) score_c2 (
       .hpos(pix_x),
       .vpos(pix_y),
-      .char(score_d2),
+      .char_code(score_d2),
       .graphics(score_on_matrix[2])
   );
 
@@ -155,7 +148,7 @@ module hud #(
   ) score_c1 (
       .hpos(pix_x),
       .vpos(pix_y),
-      .char(score_d1),
+      .char_code(score_d1),
       .graphics(score_on_matrix[1])
   );
 
@@ -166,7 +159,7 @@ module hud #(
   ) score_c0 (
       .hpos(pix_x),
       .vpos(pix_y),
-      .char(score_d0),
+      .char_code(score_d0),
       .graphics(score_on_matrix[0])
   );
 
