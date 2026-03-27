@@ -20,7 +20,8 @@
 			],
 			"settings": {
 				"verilog.languageServer.veribleVerilogLs.enabled": true,
-				"verilog.linting.linter": "verilator"
+				"verilog.linting.linter": "verilator",
+				"verilog.linting.verilator.arguments": "-Wno-WIDTHEXPAND"
 			}
 		}
 	},

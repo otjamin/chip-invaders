@@ -1,4 +1,3 @@
-
 module collision_detection #(
     parameter logic [15:0] NUMBER_ROWS = 2,
     parameter logic [15:0] NUMBER_COLUMNS = 4,

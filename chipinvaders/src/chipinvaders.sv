@@ -77,27 +77,27 @@ module chipinvaders (
   logic [1:0] lives = 3;
   logic [13:0] score;
 
-// Alien formation
-  localparam int number_rows = 5;
-  localparam int number_columns = 8;
-  localparam [15:0] alien_sprite_width = 16;
-  localparam [15:0] alien_sprite_height = 16;
-  localparam [3:0] alien_scaling = 2;
-  localparam [15:0] projectile_sprite_width = 1;
-  localparam [15:0] projectile_sprite_height = 4;
-  localparam [3:0] projectile_scaling = 4;
-  logic [number_rows-1:0][number_columns-1:0] alive_matrix;
-  logic [number_rows-1:0][number_columns-1:0] hit_matrix;
-  logic [15:0] [number_rows-1:0][number_columns-1:0] alien_position_x_matrix;
-  logic [15:0] [number_rows-1:0][number_columns-1:0] alien_position_y_matrix;
+  // Alien formation
+  localparam int NumberRows = 5;
+  localparam int NumberColumns = 8;
+  localparam [15:0] AlienSpriteWidth = 16;
+  localparam [15:0] AlienSpriteHeight = 16;
+  localparam [3:0] AlienScaling = 2;
+  localparam [15:0] ProjectileSpriteWidth = 1;
+  localparam [15:0] ProjectileSpriteHeight = 4;
+  localparam [3:0] ProjectileScaling = 4;
+  logic [NumberRows-1:0][NumberColumns-1:0] alive_matrix;
+  logic [NumberRows-1:0][NumberColumns-1:0] hit_matrix;
+  logic [15:0][NumberRows-1:0][NumberColumns-1:0] alien_position_x_matrix;
+  logic [15:0][NumberRows-1:0][NumberColumns-1:0] alien_position_y_matrix;
   logic alien_pixel;
 
   alien_formation #(
-      .NUMBER_ROWS(number_rows),
-      .NUMBER_COLUMNS(number_columns),
-      .SPRITE_WIDTH(alien_sprite_width),
-      .SPRITE_HEIGHT(alien_sprite_height),
-      .SCALING_FACTOR(alien_scaling)
+      .NUMBER_ROWS(NumberRows),
+      .NUMBER_COLUMNS(NumberColumns),
+      .SPRITE_WIDTH(AlienSpriteWidth),
+      .SPRITE_HEIGHT(AlienSpriteHeight),
+      .SCALING_FACTOR(AlienScaling)
   ) aliens (
       .clk(clk_25mhz),
       .enable(vsync_pe),
@@ -113,16 +113,16 @@ module chipinvaders (
 
   // Collision detection
   logic hit_alien;
-  
+
   collision_detection #(
-      .NUMBER_ROWS(number_rows),
-      .NUMBER_COLUMNS(number_columns),
-      .ALIEN_SPRITE_WIDTH(alien_sprite_width),
-      .ALIEN_SPRITE_HEIGHT(alien_sprite_height),
-      .ALIEN_SCALING(alien_scaling),
-      .PROJECTILE_SPRITE_WIDTH(projectile_sprite_width),
-      .PROJECTILE_SPRITE_HEIGHT(projectile_sprite_height),
-      .PROJECTILE_SCALING(projectile_scaling)
+      .NUMBER_ROWS(NumberRows),
+      .NUMBER_COLUMNS(NumberColumns),
+      .ALIEN_SPRITE_WIDTH(AlienSpriteWidth),
+      .ALIEN_SPRITE_HEIGHT(AlienSpriteHeight),
+      .ALIEN_SCALING(AlienScaling),
+      .PROJECTILE_SPRITE_WIDTH(ProjectileSpriteWidth),
+      .PROJECTILE_SPRITE_HEIGHT(ProjectileSpriteHeight),
+      .PROJECTILE_SCALING(ProjectileScaling)
   ) collision_det (
       .clk(clk_25mhz),
       .rst_n(rst_n),

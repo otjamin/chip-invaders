@@ -25,14 +25,14 @@ module cannon_laser #(
 
   localparam LaserSpeed = 6;
   localparam LaserWidth = 1 * SCALING;
-  localparam LaserHeight = 4  * SCALING;
+  localparam LaserHeight = 4 * SCALING;
 
   always_ff @(posedge clk or negedge reset_n) begin
     if (!reset_n) begin
       laser_active <= 0;
     end else if (enable) begin
       if (shoot && !laser_active) begin
-        laser_x <= cannon_x+(6); // TODO: Center laser on cannon
+        laser_x <= cannon_x + (6);  // TODO: Center laser on cannon
         laser_y <= CANNON_Y;
         laser_active <= 1;
       end else if (laser_active) begin
@@ -41,7 +41,7 @@ module cannon_laser #(
         end else begin
           laser_active <= 0;
         end
-        
+
         if (hit_alien) begin
           laser_active <= 0;
         end
