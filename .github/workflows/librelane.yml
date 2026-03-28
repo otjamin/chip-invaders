@@ -26,5 +26,4 @@ jobs:
             extra-trusted-public-keys = nix-cache.fossi-foundation.org:3+K59iFwXqKsL7BNu6Guy0v+uTlwsxYQxjspXzqLYQs=
 
       - name: Run Librelane
-        working-directory: chipinvaders
         run: nix-shell librelane/ --run "make librelane-nodrc"

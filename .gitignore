@@ -1,3 +1,7 @@
+# Librelane output
+runs/
+
+# FPGA artefacts
 *.bit
 *.frames
 *.fasm

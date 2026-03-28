@@ -21,7 +21,11 @@
 			"settings": {
 				"verilog.languageServer.veribleVerilogLs.enabled": true,
 				"verilog.linting.linter": "verilator",
-				"verilog.linting.verilator.arguments": "-Wno-WIDTHEXPAND"
+				"verilog.linting.verilator.arguments": "-Wno-WIDTHEXPAND",
+				"verilog.linting.verilator.includePath": [
+					"src",
+					"src/rtl"
+				]
 			}
 		}
 	}

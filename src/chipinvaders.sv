@@ -15,20 +15,21 @@ module chipinvaders (
     output logic vga_hs,
     output logic vga_vs
 );
-  // Generate a 25 MHz clock from the 100 MHz input
-  logic [1:0] counter;
+
   logic clk_25mhz;
+  // // Generate a 25 MHz clock from the 100 MHz input
+  // logic [1:0] counter;
 
-  always_ff @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-      counter <= 0;
-    end else begin
-      counter <= counter + 1;
-    end
-  end
+  // always_ff @(posedge clk or negedge rst_n) begin
+  //   if (!rst_n) begin
+  //     counter <= 0;
+  //   end else begin
+  //     counter <= counter + 1;
+  //   end
+  // end
 
-  assign clk_25mhz = counter[1];
-  //assign clk_25mhz = clk;
+  // assign clk_25mhz = counter[1];
+  assign clk_25mhz = clk;
 
   // Colors
   localparam logic [11:0] CannonColor = 12'b0100_1001_0000;
